@@ -147,7 +147,7 @@ $BODY$
 	cost 100
 	rows 1000;
 alter function cbp.f_net_weight_parser()
-	owner to clipper_intern
+	owner to adam_turner
 ;
 
 select * from cbp.f_net_weight_parser()
