@@ -1,2 +1,2 @@
 # Postgres Functions
-# Examples of functions I've written for a Postgres database.
+## Examples of functions I've written for a Postgres database.
