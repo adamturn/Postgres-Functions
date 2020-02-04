@@ -1,14 +1,39 @@
-﻿CREATE OR REPLACE FUNCTION cbp.f_net_weight_parser()
+CREATE OR REPLACE FUNCTION cbp.f_net_weight_parser()
 --DROP FUNCTION cbp.f_net_weight_parser()
 
-returns table(_conv_weight_mt numeric, _parsed_weight text, _parsed_unit text, _parsed text, _count bigint, _weight_ratio numeric,_import_id integer, _source text, _bill text, _is_amendment boolean, _date date, _vessel_name text, _imo_declared integer, _bbls numeric, _weight_mt numeric, _description text, _fulltext_description tsvector, _description_id integer, _frob boolean, _bulk boolean, _container text, _port_us integer, _port_us_name text, _port_origin integer, _port_origin_name text, _shipper text, _consignee text, _record_date date)
+returns table(_conv_weight_mt numeric, 
+	      _parsed_weight text, 
+	      _parsed_unit text, 
+	      _parsed text, 
+	      _count bigint, 
+	      _weight_ratio numeric,
+	      _import_id integer,
+	      _source text, 
+	      _bill text, 
+	      _is_amendment boolean, 
+	      _date date, 
+	      _vessel_name text, 
+	      _imo_declared integer, 
+	      _bbls numeric, 
+	      _weight_mt numeric, 
+	      _description text, 
+	      _fulltext_description tsvector, 
+	      _description_id integer, 
+	      _frob boolean, 
+	      _bulk boolean, 
+	      _container text, 
+	      _port_us integer, 
+	      _port_us_name text, 
+	      _port_origin integer, 
+	      _port_origin_name text, 
+	      _shipper text, 
+	      _consignee text, 
+	      _record_date date)
 AS
 $BODY$
 -- Function: cbp.f_net_weight_parser()
-
--- ### Parses container_description for the appropriate Net Weight. Final unit is MT. ###
-
--- New Column Descriptions
+-- 	Parses container_description for the appropriate Net Weight. Final unit is MT.
+-- New Column Descriptions:
 -- 	_parsed: this is the base Net Weight string that was parsed from the container_description 
 -- 	_parsed_weight: Clean numerical value (after updates) parsed from _parsed (the Net Weight string)
 -- 	_parsed_unit: Clean unit parsed from _parsed (the Net Weight string)
@@ -91,7 +116,7 @@ BEGIN
 
 		update t_parsing_3 set conv_weight_mt = round((parsed_weight::NUMERIC/1000), 3) where parsed_unit ~* 'KGS?';
 		update t_parsing_3 set conv_weight_mt = round((parsed_weight::NUMERIC*0.000453592), 3) where parsed_unit ~* 'LBS?';
-		UPDATE t_parsing_3 set conv_weight_mt = round(parsed_weight::numeric, 3) where parsed_unit ~* 'MTS?';
+		update t_parsing_3 set conv_weight_mt = round(parsed_weight::numeric, 3) where parsed_unit ~* 'MTS?';
 
 		--select * from t_parsing_3 order by conv_weight_mt desc
 
